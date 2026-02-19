@@ -1,0 +1,17 @@
+# Force LF line endings in source files
+*.cpp  text eol=lf
+*.hpp  text eol=lf
+*.c    text eol=lf
+*.h    text eol=lf
+CMakeLists.txt text eol=lf
+
+# Treat binary files as binary
+*.png  binary
+*.jpg  binary
+*.bmp  binary
+*.ico  binary
+*.ttf  binary
+*.wav  binary
+*.mp3  binary
+*.ogg  binary
+

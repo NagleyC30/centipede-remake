@@ -1,70 +1,27 @@
-########################################
-# Build Directories
-########################################
+# Build folders
 /build/
-/out/
-/cmake-build-*/
 /bin/
-/lib/
+/Debug/
+/Release/
 
-########################################
-# CMake Files
-########################################
+# CMake generated files
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 Makefile
-compile_commands.json
-
-########################################
-# Visual Studio (MSVC)
-########################################
-*.sln
 *.vcxproj*
-*.filters
-*.user
-*.obj
-*.pdb
-*.ilk
-*.exe
-*.dll
-*.lib
-*.exp
+*.sln
 
-########################################
-# VS Code
-########################################
-.vscode/
-
-########################################
-# Windows System Files
-########################################
-Thumbs.db
-Desktop.ini
-
-########################################
-# Temporary Files
-########################################
-*.log
-*.tmp
-*.temp
-
-########################################
-# Debug / Release Folders (if generated)
-########################################
-Debug/
-Release/
-x64/
-x86/
-
-########################################
-# macOS (if someone on team uses it)
-########################################
+# OS-specific
 .DS_Store
+Thumbs.db
 
-########################################
-# Linux (just in case)
-########################################
-*.o
-*.so
+# Editor configs
+*.user
+*.user.*
+*.log
+
+# SDL / third-party vendored libraries
+vendored/SDL/
+vendored/SDL_image/
 
