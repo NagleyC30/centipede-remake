@@ -1,4 +1,4 @@
-#include "UtilityFunctions.h"
+#include "utility_functions.hpp"
 
 bool UtilityFunctions::AABB_Collision(const SDL_FRect& r1, const SDL_FRect& r2)
 {

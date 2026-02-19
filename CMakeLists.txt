@@ -24,7 +24,7 @@ add_subdirectory(vendored/SDL_image EXCLUDE_FROM_ALL)
 # MAKE SURE TO ADD ALL OF YOUR CPP FILES
 # Normally, we would probably create a source directory, but for this
 # project just put your .h and .cpp files in the current dir.
-add_executable(hello WIN32 hello.cpp game_objects.cpp components.cpp engine.cpp car.cpp)
+add_executable(hello WIN32 hello.cpp game_objects.cpp components.cpp engine.cpp car.cpp utility_functions.cpp player.cpp centipede.cpp mushroom.cpp)
 
 # Link to the actual SDL3 library.
 target_link_libraries(hello PRIVATE SDL3_image::SDL3_image SDL3::SDL3 glm::glm)  
