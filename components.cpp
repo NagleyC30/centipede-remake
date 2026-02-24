@@ -21,10 +21,10 @@ void SpriteComponent::setY(int y) {
     destRect.y = y;
 }
 
-bool SpriteComponent::loadSprite(SDL_Renderer* renderer, char* path) {
+bool SpriteComponent::loadSprite(SDL_Renderer* renderer, char* path, float x, float y) {
     // Hard coding this for my sample game that uses 64x64 sprites.
     // You may need to adjust and/or have variable sizes.
-    destRect = {0, 0, 64, 64};
+    destRect = {x, y, 32, 32};
     this->renderer = renderer;
 
     // Surfaces are software based, so slow.  But, we need them

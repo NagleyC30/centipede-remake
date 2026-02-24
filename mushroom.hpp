@@ -6,13 +6,7 @@
 
 class Mushroom : public GameObject {
 	public:
-		Mushroom();
-
-        // What methods do we need?
-		void up(float);
-		void down(float);
-		void left(float);
-		void right(float);
+		Mushroom(float x = 0, float y = 0);
 		void update(float deltaTime) override;
 	private:
 		SDL_FRect* rect;

@@ -34,7 +34,7 @@ class SpriteComponent : public Component {
 		// Load an image from a file.  Normally we would
 		// probably have multiple images per sprite for
 		// animations.
-		bool loadSprite(SDL_Renderer* renderer, char* path);
+		bool loadSprite(SDL_Renderer* renderer, char* path, float x, float y);
 		SDL_Texture* getSprite();
 		void update(float deltaTime) override;
 		SDL_FRect* getRect();

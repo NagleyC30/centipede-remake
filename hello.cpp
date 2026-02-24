@@ -1,33 +1,56 @@
-#include "car.hpp"
+#include "mushroom.hpp"
+#include "player.hpp"
 #include "engine.hpp"
 #include "game_objects.hpp"
+#include "constants.hpp"
+#include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <iostream>
+#include <random>
+
 
 int main(int argc, char** argv) {
     // Create the objects that make up our game, and start the run.
     Engine& engine = Engine::instance();
-    
-
-    /* Here we are going to initialize all of the objects we want in the main scene.
-     * Then, have engine run the scene. No advanced start page or anything yet */
     Scene scene;
-    
-    /* We need to call a method that sets up the level. This means setting up the 
-     * mushrooms in a random way. Seperate the screen into a small "board" where
-     * each space is the size of the rectangles we are using for each sprite. */
-    // Mushroom mushroom;
-    
-    Car car;
-    
-    // Adds objects to the scene varaible
-    scene.addObject(&car);
 
-    // Engine sets the scene to whatever scene varaible we want
+    // Create the grid (invisible) that we will use to place the mushrooms and player
+    
+
+    // Create a vector of mushrooms
+    std::vector<Mushroom> mushrooms;
+    
+    // Create a random device
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    std::uniform_int_distribution<> countDist(40, 60);
+    std::uniform_int_distribution<> colDist(0, NUM_COLS - 1);
+    std::uniform_int_distribution<> rowDist(0, NUM_ROWS - 3);
+
+    int mushroomCount = countDist(gen);
+
+    for (int i = 0; i < mushroomCount; i++) {
+        int col = colDist(gen);
+        int row = rowDist(gen);
+
+        int x = col * CELL_SIZE;
+        int y = row * CELL_SIZE;
+
+        mushrooms.emplace_back(x, y);
+    }
+
+    for (auto& m : mushrooms) {
+        scene.addObject(&m);
+    }
+
+    // Generate the player and add it to the scene (final row, middle column)
+    Player player(NUM_COLS / 2 * CELL_SIZE, (NUM_ROWS - 1) * CELL_SIZE);
+    scene.addObject(&player);
+    
     engine.setScene(&scene);
-
-    // Engine runs that scene
     engine.run();
 
-    return 0;
+    return 0; 
 }
 

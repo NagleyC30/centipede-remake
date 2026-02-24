@@ -6,13 +6,11 @@
 
 class Player : public GameObject {
 	public:
-		Player();
+		Player(float x, float y);
 
         // What methods do we need?
-		void up(float);
-		void down(float);
-		void left(float);
-		void right(float);
+		void left();
+		void right();
 		void update(float deltaTime) override;
 	private:
 		SDL_FRect* rect;

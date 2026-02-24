@@ -8,7 +8,7 @@ Car::Car(){
 	// Access the sprite component to get our rectangle
 	// (destination rectangle)
 	auto* spriteComponent = addComponent<SpriteComponent>();
-	spriteComponent->loadSprite(Engine::instance().getRenderer(), "sprite.png");
+	spriteComponent->loadSprite(Engine::instance().getRenderer(), "sprite.png", 0, 0);
 	rect = spriteComponent->getRect();
 
 }
