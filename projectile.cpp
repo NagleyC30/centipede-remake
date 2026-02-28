@@ -21,8 +21,9 @@ void Projectile::update(float deltaTime) {
         rect->y -= pps;
     }
 
-    // destroy object if OOB
+    // remove from scene and destroy object if OOB
     else {
+        Engine::instance().scene->markRemoval(this);
         delete this;
     }
 }

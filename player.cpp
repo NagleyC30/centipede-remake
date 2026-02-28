@@ -41,7 +41,7 @@ void Player::update(float deltaTime) {
 
 // spawns projectile object one tile above player object
 void Player::shoot() {
-    Engine::instance().scene->addObject(new Projectile(rect->x, rect->y - CELL_SIZE));
+    Engine::instance().scene->markAdd(new Projectile(rect->x, rect->y - CELL_SIZE));
 }
 
 void Player::left() {

@@ -55,14 +55,32 @@ private:
 class Scene {
 public:
   void addObject(GameObject *go) { game_objects.push_back(go); }
+  void markRemoval(GameObject *go) { remove_queue.push_back(go); }
+  void markAdd(GameObject *go) { add_queue.push_back(go); }
+  // BUG MIGHT BE that when player gets updated, if you shoot it adds projectile object to scene, in effect fucking with the
+  // vector while iterating over it. So maybe try fixing with a markAdd() similar to markRemoval()? idk i'm way too tired
   void updateScene(float deltaTime) {
     for (auto it = game_objects.begin(); it != game_objects.end(); ++it) {
       (*it)->update(deltaTime);
     }
+
+    // Add game objects that were created during object updates
+    for (auto it = add_queue.begin(); it != add_queue.end(); ++it) {
+      addObject(*it);
+    }
+    add_queue.clear();
+
+    // Remove game objects that were marked for removal during object updates
+    for (auto it = remove_queue.begin(); it != remove_queue.end(); ++it) {
+      game_objects.erase(std::remove(game_objects.begin(), game_objects.end(), *it), game_objects.end());
+    }
+    remove_queue.clear();
   }
 
 private:
   std::vector<GameObject *> game_objects;
+  std::vector<GameObject *> remove_queue;
+  std::vector<GameObject *> add_queue;
 };
 
 #endif
