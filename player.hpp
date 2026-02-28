@@ -9,6 +9,7 @@ class Player : public GameObject {
 		Player(float x, float y);
 
         // What methods do we need?
+		void shoot();
 		void left();
 		void right();
 		void update(float deltaTime) override;

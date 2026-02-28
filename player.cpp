@@ -2,6 +2,7 @@
 #include "engine.hpp"
 #include "game_objects.hpp"
 #include "constants.hpp"
+#include "projectile.hpp"
 #include <SDL3/SDL.h>
 
 // Constructor
@@ -28,11 +29,20 @@ void Player::update(float deltaTime) {
         if (it->key.key == SDLK_D) {
             right();
         }
+
+        if (it->key.key == SDLK_J) {
+            shoot();
+        }
     }
 }
 
 // Movement should be based on the time that has passed
 // for smoothest motion.
+
+// spawns projectile object one tile above player object
+void Player::shoot() {
+    Engine::instance().scene->addObject(new Projectile(rect->x, rect->y - CELL_SIZE));
+}
 
 void Player::left() {
     if (rect->x - CELL_SIZE >= 0) {
