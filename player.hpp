@@ -6,7 +6,7 @@
 
 class Player : public GameObject {
 	public:
-		Player(float x, float y);
+		Player(float x, float y, float w = 32.0f, float h = 32.0f);
 
         // What methods do we need?
 		void shoot();

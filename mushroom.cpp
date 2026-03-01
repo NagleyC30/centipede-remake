@@ -4,11 +4,11 @@
 #include <SDL3/SDL.h>
 
 // Constructor
-Mushroom::Mushroom(float x, float y){
+Mushroom::Mushroom(float x, float y, float w, float h){
 	// Access the sprite component to get our rectangle
 	// (destination rectangle)
 	auto* spriteComponent = addComponent<SpriteComponent>();
-	spriteComponent->loadSprite(Engine::instance().getRenderer(), "assets/mushroom.png", x, y);
+	spriteComponent->loadSprite(Engine::instance().getRenderer(), "assets/mushroom.png", x, y, w, h);
 	rect = spriteComponent->getRect();
 }
 

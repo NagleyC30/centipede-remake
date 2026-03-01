@@ -6,7 +6,7 @@
 
 class Mushroom : public GameObject {
 	public:
-		Mushroom(float x = 0, float y = 0);
+		Mushroom(float x = 0, float y = 0, float w = 32.0f, float h = 32.0f);
 		void update(float deltaTime) override;
 	private:
 		SDL_FRect* rect;
