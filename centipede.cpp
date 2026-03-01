@@ -34,7 +34,7 @@ bool Centipede::willCollide(float dx, float dy) {
 	SDL_FRect moveRect = *rect;
 	moveRect.x += dx;
 	moveRect.y += dy;
-	return Engine::instance().scene->collision(moveRect, this) != nullptr;
+	return Engine::instance().scene->collision(this) != nullptr;
 }
 
 // Movement should be based on the time that has passed

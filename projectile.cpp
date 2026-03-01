@@ -16,14 +16,22 @@ Projectile::Projectile(float x, float y) {
 // Called once per frame
 void Projectile::update(float deltaTime) {
     GameObject::update(deltaTime);
-    
+
     if (rect->y - pps * deltaTime >= 0) {
         rect->y -= pps * deltaTime;
+
+        // Check for collision
+        GameObject* hitObj = Engine::instance().scene->collision(this);
+        if (hitObj) {
+            Engine::instance().scene->markRemoval(hitObj);
+            Engine::instance().scene->markRemoval(this);
+            // delete this;
+        }
     }
 
     // remove from scene and destroy object if OOB
     else {
         Engine::instance().scene->markRemoval(this);
-        delete this;
+        // delete this;
     }
 }

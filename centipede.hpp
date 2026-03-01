@@ -19,7 +19,6 @@ class Centipede : public GameObject {
 		SDL_FRect* rect;
 		float pps = 0.5;
 		int xDir = 1; // stores whether centipede moves left or right
-		int yDir = 1; // stores whether centipede moves up or down
 };
 
 #endif
