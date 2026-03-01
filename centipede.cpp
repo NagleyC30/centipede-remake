@@ -3,6 +3,7 @@
 #include "game_objects.hpp"
 #include "constants.hpp"
 #include "utility_functions.hpp"
+#include "mushroom.hpp"
 #include <typeinfo>
 #include <SDL3/SDL.h>
 
@@ -18,6 +19,13 @@ Centipede::Centipede(float x, float y, float w, float h){
 // getter for xDir
 int Centipede::getxDir() {
 	return xDir;
+}
+
+void Centipede::onHit() {
+	Engine::instance().scene->markRemoval(this);
+
+	// spawn mushroom on nearest tile kind of
+	Engine::instance().scene->markAdd(new Mushroom((static_cast<int>(rect->x) / CELL_SIZE) * CELL_SIZE, rect->y));
 }
 
 // Called once per frame

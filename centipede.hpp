@@ -12,6 +12,7 @@ class Centipede : public GameObject {
 		int getxDir();
 		void xMove(float);
 		void down(float);
+		void onHit();
 		void update(float) override;
 		bool willCollide(float, float);
 	private:

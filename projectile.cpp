@@ -2,6 +2,8 @@
 #include "game_objects.hpp"
 #include "constants.hpp"
 #include "projectile.hpp"
+#include "centipede.hpp"
+#include "mushroom.hpp"
 #include <SDL3/SDL.h>
 
 // Constructor
@@ -20,10 +22,15 @@ void Projectile::update(float deltaTime) {
     if (rect->y - pps * deltaTime >= 0) {
         rect->y -= pps * deltaTime;
 
-        // Check for collision
+        // Check for collision (very bad spaghetti code that breaks decoupling, don't do this)
         GameObject* hitObj = Engine::instance().scene->collision(rect, this);
         if (hitObj) {
-            Engine::instance().scene->markRemoval(hitObj);
+            if (Centipede* c = dynamic_cast<Centipede*>(hitObj)) {
+                c->onHit();
+            }
+            if (Mushroom* m = dynamic_cast<Mushroom*>(hitObj)) {
+                m->onHit();
+            }
             Engine::instance().scene->markRemoval(this);
             // delete this;
         }

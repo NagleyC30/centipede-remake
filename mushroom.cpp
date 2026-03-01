@@ -12,6 +12,13 @@ Mushroom::Mushroom(float x, float y, float w, float h){
 	rect = spriteComponent->getRect();
 }
 
+void Mushroom::onHit() {
+	hp--;
+	if (hp <= 0) {
+		Engine::instance().scene->markRemoval(this);
+	}
+}
+
 // Called once per frame
 void Mushroom::update(float deltaTime) {
 	// Call the parent class to notify components
