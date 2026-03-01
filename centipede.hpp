@@ -6,7 +6,7 @@
 
 class Centipede : public GameObject {
 	public:
-		Centipede(float x, float y);
+		Centipede(float x, float y, float w = 32.0f, float h = 32.0f);
 
         // What methods do we need?
 		int getxDir();

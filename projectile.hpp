@@ -6,7 +6,7 @@
 
 class Projectile : public GameObject {
 	public:
-		Projectile(float x, float y);
+		Projectile(float x, float y, float w = 32.0f, float h = 32.0f);
         ~Projectile() = default;
 
         // What methods do we need?
