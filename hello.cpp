@@ -50,8 +50,11 @@ int main(int argc, char** argv) {
     scene.addObject(&player);
 
     // Add centipede to scene
-    Centipede centipede(NUM_COLS / 2 * CELL_SIZE, 0);
-    scene.addObject(&centipede);
+    std::vector<Centipede*> centipedes;
+    for (size_t i=0; i<12; ++i) {
+        centipedes.emplace_back(new Centipede(i * CELL_SIZE, 0));
+        scene.addObject(centipedes[i]);
+    }
     
     engine.setScene(&scene);
     engine.run();

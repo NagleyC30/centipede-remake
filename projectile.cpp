@@ -21,7 +21,7 @@ void Projectile::update(float deltaTime) {
         rect->y -= pps * deltaTime;
 
         // Check for collision
-        GameObject* hitObj = Engine::instance().scene->collision(this);
+        GameObject* hitObj = Engine::instance().scene->collision(rect, this);
         if (hitObj) {
             Engine::instance().scene->markRemoval(hitObj);
             Engine::instance().scene->markRemoval(this);

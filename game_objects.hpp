@@ -79,10 +79,9 @@ public:
   }
   
   // returns object that given rectangle collides with, if any
-  GameObject* collision(GameObject* obj) {
-    SDL_FRect rect = *(obj->getComponent<SpriteComponent>()->getRect());
+  GameObject* collision(SDL_FRect* rect, GameObject* ignore) {
     for (const auto &o : game_objects) {
-      if (obj != o && UtilityFunctions::AABB_Collision(rect, *(o->getComponent<SpriteComponent>()->getRect()))) {
+      if (o != ignore && UtilityFunctions::AABB_Collision(*rect, *(o->getComponent<SpriteComponent>()->getRect()))) {
         return o;
       }
     }
