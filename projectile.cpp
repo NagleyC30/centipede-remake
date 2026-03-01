@@ -17,8 +17,8 @@ Projectile::Projectile(float x, float y) {
 void Projectile::update(float deltaTime) {
     GameObject::update(deltaTime);
     
-    if (rect->y - pps >= 0) {
-        rect->y -= pps;
+    if (rect->y - pps * deltaTime >= 0) {
+        rect->y -= pps * deltaTime;
     }
 
     // remove from scene and destroy object if OOB

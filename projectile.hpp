@@ -13,7 +13,7 @@ class Projectile : public GameObject {
 		void update(float deltaTime) override;
 	private:
 		SDL_FRect* rect;
-		float pps = 10.0;
+		float pps = 1.0;
 };
 
 

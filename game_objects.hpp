@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 
+#include "utility_functions.hpp"
 #include "components.hpp"
 
 // Everything is a game object.  Game objects hold components
@@ -75,6 +76,16 @@ public:
       game_objects.erase(std::remove(game_objects.begin(), game_objects.end(), *it), game_objects.end());
     }
     remove_queue.clear();
+  }
+  
+  // returns object that given rectangle collides with, if any
+  GameObject* collision(const SDL_FRect &rect, const GameObject* ignore) {
+    for (const auto &obj : game_objects) {
+      if (obj != ignore && UtilityFunctions::AABB_Collision(rect, *(obj->getComponent<SpriteComponent>()->getRect()))) {
+        return obj;
+      }
+    }
+    return nullptr;
   }
 
 private:
