@@ -6,18 +6,17 @@
 
 class Centipede : public GameObject {
 	public:
-		Centipede();
+		Centipede(float x, float y);
 
         // What methods do we need?
-		void up(float);
+		void xMove(float);
 		void down(float);
-		void left(float);
-		void right(float);
-		void update(float deltaTime) override;
+		void update(float) override;
+		bool willCollide(float, float);
 	private:
 		SDL_FRect* rect;
-		float pps = 10.0;
+		float pps = 0.5;
+		int xDir = 1; // stores whether centipede moves left or right
 };
-
 
 #endif

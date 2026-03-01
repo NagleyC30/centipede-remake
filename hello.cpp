@@ -3,6 +3,7 @@
 #include "engine.hpp"
 #include "game_objects.hpp"
 #include "constants.hpp"
+#include "centipede.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <iostream>
@@ -26,7 +27,7 @@ int main(int argc, char** argv) {
 
     std::uniform_int_distribution<> countDist(40, 60);
     std::uniform_int_distribution<> colDist(0, NUM_COLS - 1);
-    std::uniform_int_distribution<> rowDist(0, NUM_ROWS - 3);
+    std::uniform_int_distribution<> rowDist(1, NUM_ROWS - 3);
 
     int mushroomCount = countDist(gen);
 
@@ -47,6 +48,10 @@ int main(int argc, char** argv) {
     // Generate the player and add it to the scene (final row, middle column)
     Player player(NUM_COLS / 2 * CELL_SIZE, (NUM_ROWS - 1) * CELL_SIZE);
     scene.addObject(&player);
+
+    // Add centipede to scene
+    Centipede centipede(NUM_COLS / 2 * CELL_SIZE, 0);
+    scene.addObject(&centipede);
     
     engine.setScene(&scene);
     engine.run();

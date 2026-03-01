@@ -9,21 +9,29 @@ Projectile::Projectile(float x, float y) {
 	// Access the sprite component to get our rectangle
 	// (destination rectangle)
 	auto* spriteComponent = addComponent<SpriteComponent>();
-	spriteComponent->loadSprite(Engine::instance().getRenderer(), "projectile.png", x, y);
+	spriteComponent->loadSprite(Engine::instance().getRenderer(), "assets/projectile.png", x, y);
 	rect = spriteComponent->getRect();
 }
 
 // Called once per frame
 void Projectile::update(float deltaTime) {
     GameObject::update(deltaTime);
-    
-    if (rect->y - pps >= 0) {
-        rect->y -= pps;
+
+    if (rect->y - pps * deltaTime >= 0) {
+        rect->y -= pps * deltaTime;
+
+        // Check for collision
+        GameObject* hitObj = Engine::instance().scene->collision(this);
+        if (hitObj) {
+            Engine::instance().scene->markRemoval(hitObj);
+            Engine::instance().scene->markRemoval(this);
+            // delete this;
+        }
     }
 
     // remove from scene and destroy object if OOB
     else {
         Engine::instance().scene->markRemoval(this);
-        delete this;
+        // delete this;
     }
 }
