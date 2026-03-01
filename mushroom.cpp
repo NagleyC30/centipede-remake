@@ -8,7 +8,7 @@ Mushroom::Mushroom(float x, float y){
 	// Access the sprite component to get our rectangle
 	// (destination rectangle)
 	auto* spriteComponent = addComponent<SpriteComponent>();
-	spriteComponent->loadSprite(Engine::instance().getRenderer(), "mushroom.png", x, y);
+	spriteComponent->loadSprite(Engine::instance().getRenderer(), "mushroomV2.png", x, y);
 	rect = spriteComponent->getRect();
 }
 
