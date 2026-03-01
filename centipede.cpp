@@ -10,7 +10,7 @@ Centipede::Centipede(float x, float y){
 	// Access the sprite component to get our rectangle
 	// (destination rectangle)
 	auto* spriteComponent = addComponent<SpriteComponent>();
-	spriteComponent->loadSprite(Engine::instance().getRenderer(), "centipede.png", x, y);
+	spriteComponent->loadSprite(Engine::instance().getRenderer(), "assets/centipede.png", x, y);
 	rect = spriteComponent->getRect();
 }
 

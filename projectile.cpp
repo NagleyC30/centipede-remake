@@ -9,7 +9,7 @@ Projectile::Projectile(float x, float y) {
 	// Access the sprite component to get our rectangle
 	// (destination rectangle)
 	auto* spriteComponent = addComponent<SpriteComponent>();
-	spriteComponent->loadSprite(Engine::instance().getRenderer(), "projectile.png", x, y);
+	spriteComponent->loadSprite(Engine::instance().getRenderer(), "assets/projectile.png", x, y);
 	rect = spriteComponent->getRect();
 }
 
