@@ -41,14 +41,14 @@ bool Centipede::willCollide(float dx, float dy) {
 	SDL_FRect moveRect = *rect;
 	moveRect.x += dx;
 	moveRect.y += dy;
-	// GameObject* collisionObj = Engine::instance().scene->collision(&moveRect, this);
+	GameObject* collisionObj = Engine::instance().scene->collision(&moveRect, this);
 	
 	// no collision if object is another centipede moving the same direction
 	// (pretty sure I shouldn't need this but collision is being dumb, whoever implemented it must have no idea what they're doing)
-	// if (Centipede* c = dynamic_cast<Centipede*>(collisionObj)) {
-	// 	if (c->getxDir() == xDir) return false;
-	// }
-	return Engine::instance().scene->collision(&moveRect, this);
+	if (Centipede* c = dynamic_cast<Centipede*>(collisionObj)) {
+		return c->getxDir() != xDir;
+	}
+	return collisionObj;
 }
 
 // Movement should be based on the time that has passed

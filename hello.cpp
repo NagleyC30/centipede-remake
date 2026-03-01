@@ -51,8 +51,8 @@ int main(int argc, char** argv) {
 
     // Add centipede to scene
     std::vector<Centipede*> centipedes;
-    for (size_t i=0; i<12; ++i) {
-        centipedes.emplace_back(new Centipede(i * CELL_SIZE, 0));
+    for (size_t i=0; i<12; i++) {
+        centipedes.emplace_back(new Centipede(NUM_COLS / 2 * CELL_SIZE - i * CELL_SIZE, 0));
         scene.addObject(centipedes[i]);
     }
     
