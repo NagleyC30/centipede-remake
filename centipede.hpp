@@ -9,10 +9,8 @@ class Centipede : public GameObject {
 		Centipede(float x, float y);
 
         // What methods do we need?
-		void up();
-		void down();
-		void left();
-		void right();
+		void xMove(float);
+		void down(float);
 		void update(float) override;
 		bool willCollide(float, float);
 	private:

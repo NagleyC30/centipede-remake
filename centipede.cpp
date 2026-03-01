@@ -21,11 +21,11 @@ void Centipede::update(float deltaTime) {
 
 	// move based on detected collisions and OOB
 	if (rect->x + pps * deltaTime * xDir < 0 || rect->x + pps * deltaTime * xDir > WINDOW_WIDTH - CELL_SIZE || willCollide(pps * deltaTime * xDir, 0.0)) {
-		rect->y += CELL_SIZE;
+		down(deltaTime);
 		xDir *= -1;
 	}
 	else {
-		rect->x += pps * deltaTime * xDir;
+		xMove(deltaTime);
 	}
 }
 
@@ -39,18 +39,10 @@ bool Centipede::willCollide(float dx, float dy) {
 
 // Movement should be based on the time that has passed
 // for smoothest motion.
-void Centipede::up(){
-	rect->y -= CELL_SIZE;
+void Centipede::xMove(float deltaTime){
+	rect->x += pps * deltaTime * xDir;
 }
 
-void Centipede::down(){
+void Centipede::down(float deltaTime){
 	rect->y += CELL_SIZE;
-}
-
-void Centipede::left(){
-	rect->x -= CELL_SIZE;
-}
-
-void Centipede::right(){
-	rect->x += CELL_SIZE;
 }
