@@ -7,11 +7,13 @@
 #include <functional>
 
 class Button : public GameObject {
-	public:
-		Button(float x = BUTTON_X, float y = BUTTON_Y, float w = BUTTON_WIDTH, float h = BUTTON_HEIGHT);
-	    void update(float deltaTime) override;
-    private:
-		SDL_FRect* rect;
+   public:
+	   Button(float x = BUTTON_X, float y = BUTTON_Y, float w = BUTTON_WIDTH, float h = BUTTON_HEIGHT);
+	   void setCallback(std::function<void()> callback);
+	   void update(float deltaTime) override;
+   private:
+	   std::function<void()> onSpacebarClick;
+	   SDL_FRect* rect;
 };
 
 

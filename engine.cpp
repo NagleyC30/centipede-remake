@@ -1,6 +1,5 @@
 #include "engine.hpp"
 #include "game_objects.hpp"
-
 #include <SDL3/SDL.h>
 
 // Want to share these.  Easiest (and quick) way
@@ -49,7 +48,7 @@ bool Engine::init() {
 	}
 
 	// Gotta draw somewhere....
-	window = SDL_CreateWindow("RGB Color Cycle", 800, 600, 0);
+	window = SDL_CreateWindow("Return of the Centipede", 800, 600, 0);
 
 	if (!window) {
 		SDL_Log("SDL_CreateWindow failed: %s", SDL_GetError());
