@@ -18,7 +18,7 @@ class Player : public GameObject {
 		static void setOnDeathCallback(std::function<void()> callback);
 	private:
 		SDL_FRect* rect;
-		float shootCooldown = 300.0;
+		float shootCooldown = 250.0;
 		float timeSinceLastShoot = 0.0;
 };
 

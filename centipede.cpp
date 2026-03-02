@@ -4,6 +4,7 @@
 #include "constants.hpp"
 #include "utility_functions.hpp"
 #include "mushroom.hpp"
+#include "player.hpp"
 #include <typeinfo>
 #include <SDL3/SDL.h>
 
@@ -53,8 +54,12 @@ bool Centipede::willCollide(float dx, float dy) {
 	
 	// no collision if object is another centipede moving the same direction
 	// (pretty sure I shouldn't need this but collision is being dumb, whoever implemented it must have no idea what they're doing)
+	// BAD, DON'T DO THIS
 	if (Centipede* c = dynamic_cast<Centipede*>(collisionObj)) {
 		return c->getxDir() != xDir;
+	}
+	if (Player* p = dynamic_cast<Player*>(collisionObj)) {
+		return false;
 	}
 	return collisionObj;
 }
@@ -67,4 +72,5 @@ void Centipede::xMove(float deltaTime){
 
 void Centipede::down(float deltaTime){
 	rect->y += CELL_SIZE;
+	rect->x = UtilityFunctions::nearestTile(rect->x); // snap to nearest tile on x axis
 }

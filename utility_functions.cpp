@@ -10,4 +10,12 @@ bool UtilityFunctions::AABB_Collision(const SDL_FRect& a, const SDL_FRect& b)
     return false; // No collision
 }
 
-
+float UtilityFunctions::nearestTile(const float x) {
+    int tileNum = static_cast<int>(x / CELL_SIZE);
+    int left = tileNum * CELL_SIZE;
+    int right = (tileNum + 1) * CELL_SIZE;
+    if (x - left <= right - x) {
+        return left;
+    }
+    return right;
+}
