@@ -45,8 +45,15 @@ void Player::update(float deltaTime) {
     }
 }
 
+static std::function<void()> onDeathCallback;
+
+void Player::setOnDeathCallback(std::function<void()> callback) {
+	onDeathCallback = callback;
+}
+
 void Player::onDeath() {
     Engine::instance().scene->markRemoval(this);
+    if (onDeathCallback) onDeathCallback();
 }
 
 // Movement should be based on the time that has passed

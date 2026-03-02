@@ -5,7 +5,6 @@
 #include "centipede.hpp"
 #include "game_objects.hpp"
 #include <SDL3/SDL.h>
-#include <SDL3/SDL_mouse.h>
 #include <random>
 
 // Constructor
