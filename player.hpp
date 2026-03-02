@@ -16,6 +16,8 @@ class Player : public GameObject {
 		void update(float deltaTime) override;
 	private:
 		SDL_FRect* rect;
+		float shootCooldown = 300.0;
+		float timeSinceLastShoot = 0.0;
 };
 
 

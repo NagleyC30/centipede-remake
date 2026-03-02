@@ -18,7 +18,8 @@ Player::Player(float x, float y, float w, float h){
 // Called once per frame
 void Player::update(float deltaTime) {
     GameObject::update(deltaTime);
-
+    
+    timeSinceLastShoot += deltaTime;
     for (auto it = Engine::keyEvents.begin(); 
         it != Engine::keyEvents.end(); ++it) {
 
@@ -31,7 +32,10 @@ void Player::update(float deltaTime) {
         }
 
         if (it->key.key == SDLK_J) {
-            shoot();
+            if (timeSinceLastShoot > shootCooldown) {
+                shoot();
+                timeSinceLastShoot = 0.0;
+            }
         }
     }
 
