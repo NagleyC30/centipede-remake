@@ -34,6 +34,15 @@ void Player::update(float deltaTime) {
             shoot();
         }
     }
+
+    // if player death
+    if (Engine::instance().scene->collision(rect, this)) {
+        onDeath();
+    }
+}
+
+void Player::onDeath() {
+    Engine::instance().scene->markRemoval(this);
 }
 
 // Movement should be based on the time that has passed

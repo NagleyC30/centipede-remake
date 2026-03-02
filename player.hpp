@@ -9,13 +9,13 @@ class Player : public GameObject {
 		Player(float x, float y, float w = 32.0f, float h = 32.0f);
 
         // What methods do we need?
+		void onDeath();
 		void shoot();
 		void left();
 		void right();
 		void update(float deltaTime) override;
 	private:
 		SDL_FRect* rect;
-		float pps = 10.0;
 };
 
 
