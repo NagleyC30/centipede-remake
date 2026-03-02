@@ -25,8 +25,8 @@ int Centipede::getxDir() {
 void Centipede::onHit() {
 	Engine::instance().scene->markRemoval(this);
 
-	// spawn mushroom on nearest tile kind of
-	Engine::instance().scene->markAdd(new Mushroom((static_cast<int>(rect->x) / CELL_SIZE) * CELL_SIZE, rect->y));
+	// spawn mushroom on nearest tile
+	Engine::instance().scene->markAdd(new Mushroom((UtilityFunctions::nearestTile(rect->x)), rect->y));
 }
 
 // Called once per frame
