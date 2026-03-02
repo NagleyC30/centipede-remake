@@ -14,6 +14,8 @@ class Player : public GameObject {
 		void left();
 		void right();
 		void update(float deltaTime) override;
+
+		static void setOnDeathCallback(std::function<void()> callback);
 	private:
 		SDL_FRect* rect;
 		float shootCooldown = 300.0;

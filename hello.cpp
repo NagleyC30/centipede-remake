@@ -16,22 +16,34 @@ int main(int argc, char** argv) {
     // Create the objects that make up our game, and start the run.
     Engine& engine = Engine::instance();
     
-    // Create both scenes
+    // Create all scenes
     Scene titleScreen;
     Scene game;
+    Scene gameOver;
 
-    // Create button and title
+    // Create title screen objects
     Button start(BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-    Text title;
+    Text title("assets/title.png");
+
+    // Create game over screen objects
+    Text gameOverText("assets/gameOver.png");
 
     // Setup button callback to switch to game scene
     start.setCallback([&engine, &game]() {
         engine.setScene(&game);
     });
+
+    // Setup game over callback to switch to game over scene
+    Player::setOnDeathCallback([&engine, &gameOver]() {
+        engine.setScene(&gameOver);
+    });
     
     // Add title screen objects to scene
     titleScreen.addObject(&start);
     titleScreen.addObject(&title);
+
+    // Add game over screen objects to scene
+    gameOver.addObject(&gameOverText);
 
 
     /*
