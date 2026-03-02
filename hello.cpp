@@ -4,6 +4,8 @@
 #include "game_objects.hpp"
 #include "constants.hpp"
 #include "centipede.hpp"
+#include "text.hpp"
+#include "button.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <iostream>
@@ -13,12 +15,31 @@
 int main(int argc, char** argv) {
     // Create the objects that make up our game, and start the run.
     Engine& engine = Engine::instance();
-    Scene scene;
-
-    // Create the grid (invisible) that we will use to place the mushrooms and player
     
+    // Create both scenes
+    Scene titleScreen;
+    Scene game;
 
-    // Create a vector of mushrooms
+    // Create button and title
+    Button start(BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+    Text title;
+
+    // Setup button callback to switch to game scene
+    start.setCallback([&engine, &game]() {
+        engine.setScene(&game);
+    });
+    
+    // Add title screen objects to scene
+    titleScreen.addObject(&start);
+    titleScreen.addObject(&title);
+
+
+    /*
+        Setup game scene objects including
+        - Mushrooms
+        - Player
+        - Centipede
+    */
     std::vector<Mushroom> mushrooms;
     
     // Create a random device
@@ -42,21 +63,21 @@ int main(int argc, char** argv) {
     }
 
     for (auto& m : mushrooms) {
-        scene.addObject(&m);
+        game.addObject(&m);
     }
 
     // Generate the player and add it to the scene (final row, middle column)
     Player player(NUM_COLS / 2 * CELL_SIZE, (NUM_ROWS - 1) * CELL_SIZE);
-    scene.addObject(&player);
+    game.addObject(&player);
 
     // Add centipede to scene
     std::vector<Centipede*> centipedes;
     for (size_t i=0; i<12; i++) {
         centipedes.emplace_back(new Centipede(NUM_COLS / 2 * CELL_SIZE - i * CELL_SIZE, 0));
-        scene.addObject(centipedes[i]);
+        game.addObject(centipedes[i]);
     }
     
-    engine.setScene(&scene);
+    engine.setScene(&titleScreen);
     engine.run();
 
     return 0; 
