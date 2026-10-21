@@ -45,6 +45,7 @@ public:
     return nullptr;
   }
 
+  // Virtual so deleting through unique_ptr<GameObject> destroys the derived class.
   virtual ~GameObject() = default;
   virtual void update(float deltaTime);
 
@@ -57,11 +58,14 @@ private:
 class Scene {
 public:
   void addObject(std::unique_ptr<GameObject> go) { game_objects.push_back(std::move(go)); }
+  // Removal only queues the object; it is destroyed at the end of updateScene,
+  // so pointers to it stay valid for the rest of the frame.
   void markRemoval(GameObject *go) { remove_queue.push_back(go); }
   // Objects created during an update are queued so we don't modify the
   // vector while iterating over it.
   void markAdd(std::unique_ptr<GameObject> go) { add_queue.push_back(std::move(go)); }
 
+  // Updates all objects, then applies queued additions and removals.
   void updateScene(float deltaTime) {
     for (auto &o : game_objects) {
       o->update(deltaTime);
@@ -95,6 +99,7 @@ public:
     for (const auto &o : game_objects) {
       if (o.get() == ignore) continue;
       auto *sprite = o->getComponent<SpriteComponent>();
+      // Objects without a sprite have no rect to collide with
       if (sprite && UtilityFunctions::AABB_Collision(*rect, *(sprite->getRect()))) {
         return o.get();
       }

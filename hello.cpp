@@ -60,11 +60,13 @@ int main(int argc, char** argv) {
             game.addObject(std::make_unique<Centipede>(NUM_COLS / 2 * CELL_SIZE - i * CELL_SIZE, 0));
         }
     };
+    // Build the first game so it is ready when the title screen is dismissed
     resetGame();
 
     // Game over screen: Space restarts with a fresh game
     gameOver.addObject(std::make_unique<Text>("assets/gameOver.png"));
     auto restart = std::make_unique<Button>(BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+    // resetGame is copied in (its captures are all references to locals that outlive the engine loop)
     restart->setCallback([&engine, &game, resetGame]() {
         resetGame();
         engine.setScene(&game);
