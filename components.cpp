@@ -21,7 +21,7 @@ void SpriteComponent::setY(int y) {
     destRect.y = y;
 }
 
-bool SpriteComponent::loadSprite(SDL_Renderer* renderer, char* path, float x, float y, float w, float h) {
+bool SpriteComponent::loadSprite(SDL_Renderer* renderer, const char* path, float x, float y, float w, float h) {
     destRect = {x, y, w, h};
     this->renderer = renderer;
 

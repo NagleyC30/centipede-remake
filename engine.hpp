@@ -6,7 +6,10 @@
 
 #define FPS 60
 #define MAX_EVENTS 128
-#define targetFrameTime 1000.0 / FPS
+// Target frame time in nanoseconds.
+#define targetFrameTimeNS (1000000000ULL / FPS)
+// Longest frame we will simulate, in ms (avoids huge jumps after a stall).
+#define MAX_FRAME_MS 33.0f
 
 class Scene;
 

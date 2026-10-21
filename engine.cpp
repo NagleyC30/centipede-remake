@@ -13,7 +13,13 @@ SDL_Renderer* Engine::getRenderer() { return this->renderer; };
 void Engine::setScene(Scene *scene) { this->scene = scene; }
 void Engine::run() {
 	running = true;
+	Uint64 lastFrame = SDL_GetTicksNS();
 	while (running) {
+		Uint64 frameStart = SDL_GetTicksNS();
+		float deltaTime = (frameStart - lastFrame) / 1000000.0f;
+		lastFrame = frameStart;
+		if (deltaTime > MAX_FRAME_MS) deltaTime = MAX_FRAME_MS;
+
 		// Clear the events from the last frame first.
 		Engine::keyEvents.clear();
 		SDL_Event event;
@@ -22,7 +28,10 @@ void Engine::run() {
 				SDL_Log("Shutting down...");
 				running = false;
 			}
-			if (event.type == SDL_EVENT_KEY_DOWN) {
+			if (event.type == SDL_EVENT_KEY_DOWN && !event.key.repeat) {
+				if (event.key.scancode == SDL_SCANCODE_ESCAPE) {
+					running = false;
+				}
 				// Since we are storing copies of events, this
 				// works.  Would not work if we were storing pointers
 				// as event is a local variable to this function and
@@ -33,11 +42,13 @@ void Engine::run() {
 
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
-		scene->updateScene(targetFrameTime);
+		scene->updateScene(deltaTime);
 		SDL_RenderPresent(renderer);
-		// Naive delay that doesn't take into account
-		// how long the loop ran.
-		SDL_Delay(targetFrameTime);
+		// Sleep only for whatever is left of this frame's time budget.
+		Uint64 elapsed = SDL_GetTicksNS() - frameStart;
+		if (elapsed < targetFrameTimeNS) {
+			SDL_DelayNS(targetFrameTimeNS - elapsed);
+		}
 	}
 }
 

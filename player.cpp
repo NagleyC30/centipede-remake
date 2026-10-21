@@ -20,23 +20,24 @@ void Player::update(float deltaTime) {
     GameObject::update(deltaTime);
     
     timeSinceLastShoot += deltaTime;
-    for (auto it = Engine::keyEvents.begin(); 
-        it != Engine::keyEvents.end(); ++it) {
+    timeSinceLastMove += deltaTime;
 
-        if (it->key.key == SDLK_A) {
-			left();
-        }
+    // Poll held keys so holding a key keeps moving/shooting.
+    const bool* keys = SDL_GetKeyboardState(nullptr);
 
-        if (it->key.key == SDLK_D) {
+    if (timeSinceLastMove >= moveCooldown) {
+        if (keys[SDL_SCANCODE_A] || keys[SDL_SCANCODE_LEFT]) {
+            left();
+            timeSinceLastMove = 0.0;
+        } else if (keys[SDL_SCANCODE_D] || keys[SDL_SCANCODE_RIGHT]) {
             right();
+            timeSinceLastMove = 0.0;
         }
+    }
 
-        if (it->key.key == SDLK_J) {
-            if (timeSinceLastShoot > shootCooldown) {
-                shoot();
-                timeSinceLastShoot = 0.0;
-            }
-        }
+    if ((keys[SDL_SCANCODE_J] || keys[SDL_SCANCODE_SPACE]) && timeSinceLastShoot > shootCooldown) {
+        shoot();
+        timeSinceLastShoot = 0.0;
     }
 
     // if player death
@@ -61,7 +62,7 @@ void Player::onDeath() {
 
 // spawns projectile object one tile above player object
 void Player::shoot() {
-    Engine::instance().scene->markAdd(new Projectile(rect->x, rect->y - CELL_SIZE));
+    Engine::instance().scene->markAdd(std::make_unique<Projectile>(rect->x, rect->y - CELL_SIZE));
 }
 
 void Player::left() {

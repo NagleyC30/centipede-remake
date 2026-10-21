@@ -45,53 +45,67 @@ public:
     return nullptr;
   }
 
+  virtual ~GameObject() = default;
   virtual void update(float deltaTime);
 
 private:
   std::vector<std::unique_ptr<Component>> components;
 };
 
-// A Scene is a simple collection for game objects. You may also
-// want to keep other information in a scene, like background color, etc.
+// A Scene owns its game objects. You may also want to keep other
+// information in a scene, like background color, etc.
 class Scene {
 public:
-  void addObject(GameObject *go) { game_objects.push_back(go); }
+  void addObject(std::unique_ptr<GameObject> go) { game_objects.push_back(std::move(go)); }
   void markRemoval(GameObject *go) { remove_queue.push_back(go); }
-  void markAdd(GameObject *go) { add_queue.push_back(go); }
-  // BUG MIGHT BE that when player gets updated, if you shoot it adds projectile object to scene, in effect fucking with the
-  // vector while iterating over it. So maybe try fixing with a markAdd() similar to markRemoval()? idk i'm way too tired
+  // Objects created during an update are queued so we don't modify the
+  // vector while iterating over it.
+  void markAdd(std::unique_ptr<GameObject> go) { add_queue.push_back(std::move(go)); }
+
   void updateScene(float deltaTime) {
-    for (auto it = game_objects.begin(); it != game_objects.end(); ++it) {
-      (*it)->update(deltaTime);
+    for (auto &o : game_objects) {
+      o->update(deltaTime);
     }
 
     // Add game objects that were created during object updates
-    for (auto it = add_queue.begin(); it != add_queue.end(); ++it) {
-      addObject(*it);
+    for (auto &o : add_queue) {
+      game_objects.push_back(std::move(o));
     }
     add_queue.clear();
 
-    // Remove game objects that were marked for removal during object updates
-    for (auto it = remove_queue.begin(); it != remove_queue.end(); ++it) {
-      game_objects.erase(std::remove(game_objects.begin(), game_objects.end(), *it), game_objects.end());
+    // Remove (and destroy) game objects that were marked for removal during object updates
+    for (GameObject *go : remove_queue) {
+      game_objects.erase(
+          std::remove_if(game_objects.begin(), game_objects.end(),
+                         [go](const std::unique_ptr<GameObject> &p) { return p.get() == go; }),
+          game_objects.end());
     }
     remove_queue.clear();
   }
-  
+
+  // Destroys every object in the scene.
+  void clear() {
+    game_objects.clear();
+    add_queue.clear();
+    remove_queue.clear();
+  }
+
   // returns object that given rectangle collides with, if any
   GameObject* collision(SDL_FRect* rect, GameObject* ignore) {
     for (const auto &o : game_objects) {
-      if (o != ignore && UtilityFunctions::AABB_Collision(*rect, *(o->getComponent<SpriteComponent>()->getRect()))) {
-        return o;
+      if (o.get() == ignore) continue;
+      auto *sprite = o->getComponent<SpriteComponent>();
+      if (sprite && UtilityFunctions::AABB_Collision(*rect, *(sprite->getRect()))) {
+        return o.get();
       }
     }
     return nullptr;
   }
 
 private:
-  std::vector<GameObject *> game_objects;
+  std::vector<std::unique_ptr<GameObject>> game_objects;
   std::vector<GameObject *> remove_queue;
-  std::vector<GameObject *> add_queue;
+  std::vector<std::unique_ptr<GameObject>> add_queue;
 };
 
 #endif

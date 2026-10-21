@@ -20,6 +20,8 @@ class Player : public GameObject {
 		SDL_FRect* rect;
 		float shootCooldown = 250.0;
 		float timeSinceLastShoot = 0.0;
+		float moveCooldown = 90.0;
+		float timeSinceLastMove = 0.0;
 };
 
 
