@@ -3,7 +3,6 @@
 
 #include <functional>
 #include <SDL3/SDL.h>
-#include <glm/vec4.hpp>
 #include <unordered_map>
 
 class GameObject;
@@ -29,8 +28,8 @@ class Component {
 
 class SpriteComponent : public Component {
 	public:
-		void setX(int x);
-		void setY(int y);
+		void setX(float x);
+		void setY(float y);
 		// Load an image from a file.  Normally we would
 		// probably have multiple images per sprite for
 		// animations.
@@ -50,17 +49,6 @@ class SpriteComponent : public Component {
 		// Shared with other sprites and owned by the Engine's texture cache
 		SDL_Texture* sprite = nullptr;
 		Uint8 tintR = 255, tintG = 255, tintB = 255;
-};
-
-// Not used yet.  Will become more important
-// when we get to 3D.
-class TransformComponent : public Component {
-	public:
-		void update(float deltaTime) override;
-	private:
-		glm::vec4 position{};
-		glm::vec4 rotation{};
-		glm::vec4 scale{1.f, 1.f, 1.f, 1.f};
 };
 
 #endif

@@ -7,12 +7,11 @@
 class Mushroom : public GameObject {
 	public:
 		Mushroom(float x = 0, float y = 0, float w = 32.0f, float h = 32.0f);
-		void onHit();
+		void onHit() override;
 		void update(float deltaTime) override;
 	private:
 		SDL_FRect* rect;
 		SpriteComponent* sprite;
-		float pps = 10.0;
 		int hp = 3;
 };
 

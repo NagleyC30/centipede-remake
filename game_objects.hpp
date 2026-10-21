@@ -4,7 +4,6 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 #include <algorithm>
-#include <glm/vec4.hpp>
 #include <memory>
 #include <vector>
 
@@ -48,6 +47,9 @@ public:
   // Virtual so deleting through unique_ptr<GameObject> destroys the derived class.
   virtual ~GameObject() = default;
   virtual void update(float deltaTime);
+  // Called when a projectile hits this object. Objects that react to hits override this,
+  // so the projectile doesn't need to know about concrete types.
+  virtual void onHit() {}
 
 private:
   std::vector<std::unique_ptr<Component>> components;

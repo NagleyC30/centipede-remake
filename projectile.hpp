@@ -13,7 +13,7 @@ class Projectile : public GameObject {
 		void update(float deltaTime) override;
 	private:
 		SDL_FRect* rect;
-		float pps = 1.0;
+		float pxPerMs = 1.0; // speed in pixels per millisecond
 };
 
 

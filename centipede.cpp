@@ -5,14 +5,13 @@
 #include "utility_functions.hpp"
 #include "mushroom.hpp"
 #include "player.hpp"
-#include <typeinfo>
 #include <SDL3/SDL.h>
 
 static int centipedesAlive = 0;
 
 // Constructor
 Centipede::Centipede(float x, float y, float w, float h, float speedScale){
-	pps *= speedScale;
+	pxPerMs *= speedScale;
 	centipedesAlive++;
 	// Access the sprite component to get our rectangle
 	// (destination rectangle)
@@ -48,8 +47,8 @@ void Centipede::update(float deltaTime) {
 	GameObject::update(deltaTime);
 
 	// move based on OOB amd detected collisions
-	if (rect->x + pps * deltaTime * xDir < 0 || rect->x + pps * deltaTime * xDir > WINDOW_WIDTH - CELL_SIZE
-		|| willCollide(pps * deltaTime * xDir, 0.0)) {
+	if (rect->x + pxPerMs * deltaTime * xDir < 0 || rect->x + pxPerMs * deltaTime * xDir > WINDOW_WIDTH - CELL_SIZE
+		|| willCollide(pxPerMs * deltaTime * xDir, 0.0)) {
 		down(deltaTime);
 		xDir *= -1;
 	}
@@ -80,7 +79,7 @@ bool Centipede::willCollide(float dx, float dy) {
 // Movement should be based on the time that has passed
 // for smoothest motion.
 void Centipede::xMove(float deltaTime){
-	rect->x += pps * deltaTime * xDir;
+	rect->x += pxPerMs * deltaTime * xDir;
 }
 
 void Centipede::down(float deltaTime){

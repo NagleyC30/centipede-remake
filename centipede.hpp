@@ -16,12 +16,12 @@ class Centipede : public GameObject {
 		int getxDir();
 		void xMove(float);
 		void down(float);
-		void onHit();
+		void onHit() override;
 		void update(float) override;
 		bool willCollide(float, float);
 	private:
 		SDL_FRect* rect;
-		float pps = 0.1;
+		float pxPerMs = 0.1; // horizontal speed in pixels per millisecond
 		int xDir = 1; // stores whether centipede moves left or right
 		int yDir = 1; // 1 = moving down the screen, -1 = moving back up
 };

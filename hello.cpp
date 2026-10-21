@@ -8,7 +8,6 @@
 #include "button.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-#include <iostream>
 #include <algorithm>
 #include <memory>
 #include <vector>

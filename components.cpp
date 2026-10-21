@@ -2,7 +2,6 @@
 #include "game_objects.hpp"
 #include "engine.hpp"
 
-#include <glm/vec4.hpp>
 #include <SDL3_image/SDL_image.h>
 #include <SDL3/SDL.h>
 
@@ -14,11 +13,11 @@ void Component::setOwner(GameObject* go) {
     owner = go;
 }
 
-void SpriteComponent::setX(int x) {
+void SpriteComponent::setX(float x) {
     destRect.x = x;
 }
 
-void SpriteComponent::setY(int y) {
+void SpriteComponent::setY(float y) {
     destRect.y = y;
 }
 
@@ -53,8 +52,4 @@ void SpriteComponent::update(float) {
 // The destRect is where and how much of the image will be drawn.
 SDL_FRect* SpriteComponent::getRect(){
     return &destRect;
-}
-
-void TransformComponent::update(float) {
-    // empty for now
 }
