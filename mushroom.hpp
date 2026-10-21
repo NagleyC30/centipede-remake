@@ -11,6 +11,7 @@ class Mushroom : public GameObject {
 		void update(float deltaTime) override;
 	private:
 		SDL_FRect* rect;
+		SpriteComponent* sprite;
 		float pps = 10.0;
 		int hp = 3;
 };

@@ -98,6 +98,9 @@ public:
   GameObject* collision(SDL_FRect* rect, GameObject* ignore) {
     for (const auto &o : game_objects) {
       if (o.get() == ignore) continue;
+      // Objects already marked for removal are dead: a second hit in the same
+      // frame must not trigger their effects again (e.g. two mushrooms).
+      if (std::find(remove_queue.begin(), remove_queue.end(), o.get()) != remove_queue.end()) continue;
       auto *sprite = o->getComponent<SpriteComponent>();
       // Objects without a sprite have no rect to collide with
       if (sprite && UtilityFunctions::AABB_Collision(*rect, *(sprite->getRect()))) {

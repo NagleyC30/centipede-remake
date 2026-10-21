@@ -2,6 +2,8 @@
 #define			__HPP_ENGINE__
 
 #include <SDL3/SDL.h>
+#include <string>
+#include <unordered_map>
 #include "game_objects.hpp"
 
 #define FPS 60
@@ -35,16 +37,24 @@ class Engine {
 		~Engine() = default;
 
 		bool init();
+		bool isInitialized() const { return initialized; }
+
+		// Returns the texture for an asset path (relative to the executable),
+		// loading it on first use. Textures are shared and owned by the engine.
+		SDL_Texture* getTexture(const char* path);
 
 		void shutdown();
 
-		SDL_Window* window;
-		SDL_Renderer* renderer;
+		SDL_Window* window = nullptr;
+		SDL_Renderer* renderer = nullptr;
+		bool initialized = false;
 		bool running = false;
+		// Texture cache, keyed by asset path
+		std::unordered_map<std::string, SDL_Texture*> textures;
 		// Notice that we are storing copies of the
 		// events, not pointers or references.
 		static std::vector<SDL_Event> keyEvents;
-		Scene* scene;
+		Scene* scene = nullptr;
 
 };
 

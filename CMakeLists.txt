@@ -26,5 +26,10 @@ add_subdirectory(vendored/SDL_image EXCLUDE_FROM_ALL)
 # project just put your .h and .cpp files in the current dir.
 add_executable(hello WIN32 hello.cpp game_objects.cpp components.cpp engine.cpp utility_functions.cpp player.cpp centipede.cpp mushroom.cpp projectile.cpp text.cpp button.cpp)
 
+# Copy assets next to the executable; the game loads them relative to it,
+# so it works no matter which directory it is launched from.
+add_custom_command(TARGET hello POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:hello>/assets)
+
 # Link to the actual SDL3 library.
 target_link_libraries(hello PRIVATE SDL3_image::SDL3_image SDL3::SDL3 glm::glm)  

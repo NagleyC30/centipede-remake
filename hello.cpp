@@ -9,13 +9,18 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <iostream>
+#include <algorithm>
 #include <memory>
+#include <vector>
 #include <random>
 
 
 int main(int argc, char** argv) {
     // Create the objects that make up our game, and start the run.
     Engine& engine = Engine::instance();
+    if (!engine.isInitialized()) {
+        return 1;
+    }
     
     // Create all scenes
     Scene titleScreen;
@@ -44,21 +49,26 @@ int main(int argc, char** argv) {
         // Destroy the previous game's objects before building a fresh set
         game.clear();
 
-        std::uniform_int_distribution<> countDist(40, 60);
-        std::uniform_int_distribution<> colDist(0, NUM_COLS - 1);
-        std::uniform_int_distribution<> rowDist(1, NUM_ROWS - 2);
+        // Pick distinct cells so mushrooms never stack on top of each other
+        std::vector<std::pair<int, int>> cells;
+        for (int row = 1; row <= NUM_ROWS - 2; row++) {
+            for (int col = 0; col < NUM_COLS; col++) {
+                cells.emplace_back(col, row);
+            }
+        }
+        std::shuffle(cells.begin(), cells.end(), gen);
 
+        std::uniform_int_distribution<> countDist(40, 60);
         int mushroomCount = countDist(gen);
         for (int i = 0; i < mushroomCount; i++) {
-            game.addObject(std::make_unique<Mushroom>(colDist(gen) * CELL_SIZE, rowDist(gen) * CELL_SIZE));
+            game.addObject(std::make_unique<Mushroom>(cells[i].first * CELL_SIZE, cells[i].second * CELL_SIZE));
         }
 
         // Player goes in the final visible row (NUM_ROWS - 1; NUM_ROWS * CELL_SIZE is off-screen), middle column
         game.addObject(std::make_unique<Player>(NUM_COLS / 2 * CELL_SIZE, (NUM_ROWS - 1) * CELL_SIZE));
 
-        for (int i = 0; i < 12; i++) {
-            game.addObject(std::make_unique<Centipede>(NUM_COLS / 2 * CELL_SIZE - i * CELL_SIZE, 0));
-        }
+        // Spawns the centipedes, and a faster wave each time they are all cleared
+        game.addObject(std::make_unique<WaveSpawner>());
     };
     // Build the first game so it is ready when the title screen is dismissed
     resetGame();
@@ -80,6 +90,7 @@ int main(int argc, char** argv) {
 
     engine.setScene(&titleScreen);
     engine.run();
+    engine.shutdown();
 
     return 0; 
 }

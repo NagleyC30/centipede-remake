@@ -36,6 +36,9 @@ class SpriteComponent : public Component {
 		// animations.
 		bool loadSprite(SDL_Renderer* renderer, const char* path, float x, float y, float w, float h);
 		SDL_Texture* getSprite();
+		// Colour multiplier applied when drawing (255 = unchanged). Stored per
+		// sprite, since the underlying texture is shared between objects.
+		void setTint(Uint8 r, Uint8 g, Uint8 b);
 		void update(float deltaTime) override;
 		SDL_FRect* getRect();
 
@@ -44,7 +47,9 @@ class SpriteComponent : public Component {
 		// from the engine.
 		SDL_Renderer* renderer = nullptr;
 		SDL_FRect destRect{};
+		// Shared with other sprites and owned by the Engine's texture cache
 		SDL_Texture* sprite = nullptr;
+		Uint8 tintR = 255, tintG = 255, tintB = 255;
 };
 
 // Not used yet.  Will become more important

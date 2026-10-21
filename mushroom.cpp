@@ -10,10 +10,14 @@ Mushroom::Mushroom(float x, float y, float w, float h){
 	auto* spriteComponent = addComponent<SpriteComponent>();
 	spriteComponent->loadSprite(Engine::instance().getRenderer(), "assets/mushroom.png", x, y, w, h);
 	rect = spriteComponent->getRect();
+	sprite = spriteComponent;
 }
 
 void Mushroom::onHit() {
 	hp--;
+	// Darken as it takes damage (hp 3 -> full colour, hp 1 -> noticeably dim)
+	Uint8 shade = static_cast<Uint8>(85 + 170 * hp / 3);
+	sprite->setTint(shade, shade, shade);
 	if (hp <= 0) {
 		Engine::instance().scene->markRemoval(this);
 	}

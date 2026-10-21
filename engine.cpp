@@ -1,6 +1,8 @@
 #include "engine.hpp"
 #include "game_objects.hpp"
+#include "constants.hpp"
 #include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 // Want to share these.  Easiest (and quick) way
 // is with a static data structure.
@@ -12,6 +14,10 @@ SDL_Renderer* Engine::getRenderer() { return this->renderer; };
 
 void Engine::setScene(Scene *scene) { this->scene = scene; }
 void Engine::run() {
+	if (!scene) {
+		SDL_Log("Engine::run called without a scene");
+		return;
+	}
 	running = true;
 	// Track real frame times so movement is independent of how long a frame takes.
 	Uint64 lastFrame = SDL_GetTicksNS();
@@ -64,7 +70,7 @@ bool Engine::init() {
 	}
 
 	// Gotta draw somewhere....
-	window = SDL_CreateWindow("Return of the Centipede", 800, 600, 0);
+	window = SDL_CreateWindow("Return of the Centipede", WINDOW_WIDTH, WINDOW_HEIGHT, 0);
 
 	if (!window) {
 		SDL_Log("SDL_CreateWindow failed: %s", SDL_GetError());
@@ -83,10 +89,43 @@ bool Engine::init() {
 
 	SDL_SetRenderVSync(renderer, 0);
 
+	initialized = true;
 	return true;
 }
 
+SDL_Texture* Engine::getTexture(const char* path) {
+	auto it = textures.find(path);
+	if (it != textures.end()) return it->second;
+
+	// Assets are copied next to the executable, so resolve against that
+	// instead of the current working directory.
+	const char* base = SDL_GetBasePath();
+	std::string fullPath = std::string(base ? base : "") + path;
+
+	// Surfaces are software based, so slow.  But, we need them
+	// when loading.
+	SDL_Surface* surface = IMG_Load(fullPath.c_str());
+	if (!surface) {
+		SDL_Log("IMG_Load Error (%s): %s", fullPath.c_str(), SDL_GetError());
+		return nullptr;
+	}
+
+	// Now create a hardware-based texture and delete the software surface.
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_DestroySurface(surface);
+	if (texture) textures[path] = texture;
+	return texture;
+}
+
 void Engine::shutdown() {
+	if (!initialized) return;
+	initialized = false;
+
+	// Textures must go before the renderer that created them.
+	for (auto& entry : textures) {
+		SDL_DestroyTexture(entry.second);
+	}
+	textures.clear();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
