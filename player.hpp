@@ -20,6 +20,7 @@ class Player : public GameObject {
 		SDL_FRect* rect;
 		float shootCooldown = 250.0;
 		float timeSinceLastShoot = 0.0;
+		// Minimum ms between one-cell moves, so holding a key moves at a steady rate
 		float moveCooldown = 90.0;
 		float timeSinceLastMove = 0.0;
 };

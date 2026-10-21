@@ -62,6 +62,7 @@ void Player::onDeath() {
 
 // spawns projectile object one tile above player object
 void Player::shoot() {
+    // The scene takes ownership of the projectile (queued until end of frame)
     Engine::instance().scene->markAdd(std::make_unique<Projectile>(rect->x, rect->y - CELL_SIZE));
 }
 

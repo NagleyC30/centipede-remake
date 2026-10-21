@@ -22,6 +22,7 @@ int main(int argc, char** argv) {
     Scene game;
     Scene gameOver;
 
+    // Scenes own their objects (unique_ptr), so everything is heap-allocated here.
     // Title screen: Space starts the game
     auto start = std::make_unique<Button>(BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
     start->setCallback([&engine, &game]() {
@@ -36,9 +37,11 @@ int main(int argc, char** argv) {
         - Player
         - Centipede
     */
+    // Seed once; resetGame reuses the generator for every new game.
     std::random_device rd;
     std::mt19937 gen(rd());
     auto resetGame = [&game, &gen]() {
+        // Destroy the previous game's objects before building a fresh set
         game.clear();
 
         std::uniform_int_distribution<> countDist(40, 60);
@@ -50,7 +53,7 @@ int main(int argc, char** argv) {
             game.addObject(std::make_unique<Mushroom>(colDist(gen) * CELL_SIZE, rowDist(gen) * CELL_SIZE));
         }
 
-        // Player goes in the final visible row, middle column
+        // Player goes in the final visible row (NUM_ROWS - 1; NUM_ROWS * CELL_SIZE is off-screen), middle column
         game.addObject(std::make_unique<Player>(NUM_COLS / 2 * CELL_SIZE, (NUM_ROWS - 1) * CELL_SIZE));
 
         for (int i = 0; i < 12; i++) {

@@ -13,11 +13,13 @@ SDL_Renderer* Engine::getRenderer() { return this->renderer; };
 void Engine::setScene(Scene *scene) { this->scene = scene; }
 void Engine::run() {
 	running = true;
+	// Track real frame times so movement is independent of how long a frame takes.
 	Uint64 lastFrame = SDL_GetTicksNS();
 	while (running) {
 		Uint64 frameStart = SDL_GetTicksNS();
 		float deltaTime = (frameStart - lastFrame) / 1000000.0f;
 		lastFrame = frameStart;
+		// Clamp after a stall (e.g. window drag) so objects don't jump through each other.
 		if (deltaTime > MAX_FRAME_MS) deltaTime = MAX_FRAME_MS;
 
 		// Clear the events from the last frame first.
@@ -28,7 +30,10 @@ void Engine::run() {
 				SDL_Log("Shutting down...");
 				running = false;
 			}
+			// Ignore OS key-repeat: held keys are polled with SDL_GetKeyboardState instead,
+			// and repeats would let a held Space skip past the title/game over screens.
 			if (event.type == SDL_EVENT_KEY_DOWN && !event.key.repeat) {
+				// Esc quits from any scene
 				if (event.key.scancode == SDL_SCANCODE_ESCAPE) {
 					running = false;
 				}
