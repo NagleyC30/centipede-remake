@@ -1,11 +1,7 @@
 #include "button.hpp"
 #include "engine.hpp"
-#include "mushroom.hpp"
-#include "player.hpp"
-#include "centipede.hpp"
 #include "game_objects.hpp"
 #include <SDL3/SDL.h>
-#include <random>
 
 // Constructor
 Button::Button(float x, float y, float w, float h){

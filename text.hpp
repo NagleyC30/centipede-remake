@@ -7,7 +7,7 @@
 
 class Text : public GameObject {
 	public:
-		Text(char* path, float x = TITLE_X, float y = TITLE_Y, float w = TITLE_WIDTH, float h = TITLE_HEIGHT);
+		Text(const char* path, float x = TITLE_X, float y = TITLE_Y, float w = TITLE_WIDTH, float h = TITLE_HEIGHT);
 	private:
 		SDL_FRect* rect;
 };

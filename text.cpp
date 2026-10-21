@@ -2,7 +2,7 @@
 #include "engine.hpp"
 
 // Constructor
-Text::Text(char* path, float x, float y, float w, float h){
+Text::Text(const char* path, float x, float y, float w, float h){
 	// Access the sprite component to get our rectangle
 	// (destination rectangle)
 	auto* spriteComponent = addComponent<SpriteComponent>();

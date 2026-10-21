@@ -3,7 +3,6 @@
 
 #include <functional>
 #include <SDL3/SDL.h>
-#include <glm/vec4.hpp>
 #include <unordered_map>
 
 class GameObject;
@@ -29,13 +28,16 @@ class Component {
 
 class SpriteComponent : public Component {
 	public:
-		void setX(int x);
-		void setY(int y);
+		void setX(float x);
+		void setY(float y);
 		// Load an image from a file.  Normally we would
 		// probably have multiple images per sprite for
 		// animations.
-		bool loadSprite(SDL_Renderer* renderer, char* path, float x, float y, float w, float h);
+		bool loadSprite(SDL_Renderer* renderer, const char* path, float x, float y, float w, float h);
 		SDL_Texture* getSprite();
+		// Colour multiplier applied when drawing (255 = unchanged). Stored per
+		// sprite, since the underlying texture is shared between objects.
+		void setTint(Uint8 r, Uint8 g, Uint8 b);
 		void update(float deltaTime) override;
 		SDL_FRect* getRect();
 
@@ -44,18 +46,9 @@ class SpriteComponent : public Component {
 		// from the engine.
 		SDL_Renderer* renderer = nullptr;
 		SDL_FRect destRect{};
+		// Shared with other sprites and owned by the Engine's texture cache
 		SDL_Texture* sprite = nullptr;
-};
-
-// Not used yet.  Will become more important
-// when we get to 3D.
-class TransformComponent : public Component {
-	public:
-		void update(float deltaTime) override;
-	private:
-		glm::vec4 position{};
-		glm::vec4 rotation{};
-		glm::vec4 scale{1.f, 1.f, 1.f, 1.f};
+		Uint8 tintR = 255, tintG = 255, tintB = 255;
 };
 
 #endif
