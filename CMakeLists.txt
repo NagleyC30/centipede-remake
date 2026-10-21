@@ -24,7 +24,7 @@ add_subdirectory(vendored/SDL_image EXCLUDE_FROM_ALL)
 # MAKE SURE TO ADD ALL OF YOUR CPP FILES
 # Normally, we would probably create a source directory, but for this
 # project just put your .h and .cpp files in the current dir.
-add_executable(hello WIN32 hello.cpp game_objects.cpp components.cpp engine.cpp utility_functions.cpp player.cpp centipede.cpp mushroom.cpp projectile.cpp text.cpp button.cpp)
+add_executable(hello WIN32 hello.cpp game_objects.cpp components.cpp engine.cpp utility_functions.cpp player.cpp centipede.cpp mushroom.cpp projectile.cpp text.cpp button.cpp ui.cpp)
 
 # Copy assets next to the executable; the game loads them relative to it,
 # so it works no matter which directory it is launched from.

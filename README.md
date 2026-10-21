@@ -15,10 +15,11 @@ The `assets/` folder is copied next to the executable on every build, so the gam
 
 | Key | Action |
 | --- | --- |
-| Space | Start / restart (title and game over screens) |
+| Click / Space / Enter | Press the on-screen button (start / play again) |
 | A / Left arrow | Move left |
 | D / Right arrow | Move right |
 | J / Space | Shoot |
+| F11 | Toggle fullscreen (the game starts fullscreen) |
 | Esc | Quit |
 
 Clearing a wave of centipedes starts a new, faster one. Mushrooms darken as they take damage.

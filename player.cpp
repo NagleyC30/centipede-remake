@@ -35,7 +35,15 @@ void Player::update(float deltaTime) {
         }
     }
 
-    if ((keys[SDL_SCANCODE_J] || keys[SDL_SCANCODE_SPACE]) && timeSinceLastShoot > shootCooldown) {
+    // Shoot while J/Space is held, and also on the key-down event itself so a
+    // quick tap that starts and ends between polls still fires.
+    bool shootPressed = keys[SDL_SCANCODE_J] || keys[SDL_SCANCODE_SPACE];
+    for (const SDL_Event& e : Engine::keyEvents) {
+        if (e.key.scancode == SDL_SCANCODE_J || e.key.scancode == SDL_SCANCODE_SPACE) {
+            shootPressed = true;
+        }
+    }
+    if (shootPressed && timeSinceLastShoot > shootCooldown) {
         shoot();
         timeSinceLastShoot = 0.0;
     }

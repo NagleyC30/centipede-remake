@@ -6,6 +6,7 @@
 #include "centipede.hpp"
 #include "text.hpp"
 #include "button.hpp"
+#include "ui.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <algorithm>
@@ -28,12 +29,17 @@ int main(int argc, char** argv) {
 
     // Scenes own their objects (unique_ptr), so everything is heap-allocated here.
     // Title screen: Space starts the game
-    auto start = std::make_unique<Button>(BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+    // Objects draw in the order they are added, so the backdrop goes first.
+    const SDL_Color hintColor = {170, 240, 190, 255};
+    titleScreen.addObject(std::make_unique<MenuBackdrop>());
+    titleScreen.addObject(std::make_unique<Text>("assets/title.png", MENU_LOGO_X, MENU_LOGO_Y, MENU_LOGO_WIDTH, MENU_LOGO_HEIGHT));
+    titleScreen.addObject(std::make_unique<RulesPanel>(RULES_X, RULES_Y, RULES_WIDTH, RULES_HEIGHT));
+    auto start = std::make_unique<Button>("START GAME");
     start->setCallback([&engine, &game]() {
         engine.setScene(&game);
     });
     titleScreen.addObject(std::move(start));
-    titleScreen.addObject(std::make_unique<Text>("assets/title.png"));
+    titleScreen.addObject(std::make_unique<Label>("Click the button or press SPACE", WINDOW_WIDTH / 2, 520, 2, hintColor));
 
     /*
         (Re)build the game scene including
@@ -72,15 +78,17 @@ int main(int argc, char** argv) {
     // Build the first game so it is ready when the title screen is dismissed
     resetGame();
 
-    // Game over screen: Space restarts with a fresh game
-    gameOver.addObject(std::make_unique<Text>("assets/gameOver.png"));
-    auto restart = std::make_unique<Button>(BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+    // Game over screen: click the button or press Space to restart with a fresh game
+    gameOver.addObject(std::make_unique<MenuBackdrop>());
+    gameOver.addObject(std::make_unique<Text>("assets/gameOver.png", MENU_LOGO_X, 110, MENU_LOGO_WIDTH, MENU_LOGO_HEIGHT));
+    auto restart = std::make_unique<Button>("PLAY AGAIN");
     // resetGame is copied in (its captures are all references to locals that outlive the engine loop)
     restart->setCallback([&engine, &game, resetGame]() {
         resetGame();
         engine.setScene(&game);
     });
     gameOver.addObject(std::move(restart));
+    gameOver.addObject(std::make_unique<Label>("Click the button or press SPACE", WINDOW_WIDTH / 2, 520, 2, hintColor));
 
     // Switch to the game over scene when the player dies
     Player::setOnDeathCallback([&engine, &gameOver]() {

@@ -39,6 +39,11 @@ void Engine::run() {
 			// Ignore OS key-repeat: held keys are polled with SDL_GetKeyboardState instead,
 			// and repeats would let a held Space skip past the title/game over screens.
 			if (event.type == SDL_EVENT_KEY_DOWN && !event.key.repeat) {
+				// F11 toggles fullscreen
+				if (event.key.scancode == SDL_SCANCODE_F11) {
+					bool isFullscreen = SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN;
+					SDL_SetWindowFullscreen(window, !isFullscreen);
+				}
 				// Esc quits from any scene
 				if (event.key.scancode == SDL_SCANCODE_ESCAPE) {
 					running = false;
@@ -70,7 +75,7 @@ bool Engine::init() {
 	}
 
 	// Gotta draw somewhere....
-	window = SDL_CreateWindow("Return of the Centipede", WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+	window = SDL_CreateWindow("Return of the Centipede", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_FULLSCREEN);
 
 	if (!window) {
 		SDL_Log("SDL_CreateWindow failed: %s", SDL_GetError());
@@ -86,6 +91,10 @@ bool Engine::init() {
 		SDL_Quit();
 		return false;
 	}
+
+	// Keep game coordinates at WINDOW_WIDTH x WINDOW_HEIGHT and let SDL scale
+	// (with black bars) to whatever the screen size is.
+	SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 
 	SDL_SetRenderVSync(renderer, 0);
 
